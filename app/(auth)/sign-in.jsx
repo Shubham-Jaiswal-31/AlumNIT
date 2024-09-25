@@ -15,14 +15,13 @@ const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = () => {
-
   }
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
         <View className="w-full justify-center min-h-[85vh] px-4 my-6">
-          <Image source={images.logo} resizeMode='contain' className="w-[115px] h-[35px]"/>
+          <Image source={images.logo} resizeMode='contain' className="w-[185px] h-[55px]"/>
 
           <Text className="text-2xl text-white text-semibold mt-10 font-semibold">
             Log in to AlumNIT
@@ -60,6 +59,17 @@ const SignIn = () => {
             </Text>
             <Link href="/sign-up" className='text-lg font-psemibold text-secondary'>Sign Up</Link>
           </View>
+          <View className="justify-center items-center mt-3">
+          <Text className="text-xl text-gray-100 font-pregular">Or</Text>
+          </View>
+          
+          <CustomButton 
+            title="Sign In with Google"
+            handlePress={submit}
+            containerStyles="mt-7"
+            isLoading={isSubmitting}
+          />
+
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -12,13 +12,13 @@ export default function App() {
         <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
             source={images.logo}
-            className="w-[130px] h-[84px]"
+            className="w-[230px] h-[84px] mt-4"
             resizeMode='contain'
           />
 
           <Image
             source={images.cards}
-            className="max-w-[380px] w-full h-[300px]"
+            className="w-full h-[300px]"
             resizeMode='contain'
           />
 
@@ -40,7 +40,7 @@ export default function App() {
           </Text>
 
           <CustomButton 
-            title="Continue with Email"
+            title="Get Started"
             handlePress={() => router.push('/sign-in')}
             containerStyles="w-full mt-7"
           />
