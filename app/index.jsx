@@ -24,19 +24,19 @@ export default function App() {
 
           <View className="relative mt-5">
             <Text className="text-3xl text-white font-bold text-center">
-              Discover Endless Possibilites with {' '}
+              Connect with your Alumnis at {' '}
               <Text className="text-secondary-200">AlumNIT</Text>
             </Text>
 
             <Image
               source={images.path}
-              className="w-[136px] h-[15px] absolute -bottom-2 -right-0"
+              className="w-[136px] h-[15px] absolute -bottom-1 -right-7"
               resizeMode='contain'
             />
           </View>
 
           <Text className="text-sm text-gray-100 font-pregular mt-7 text-center">
-            Where creativity meets innovation: Embark on a journey of limitless exploration with AlumNIT
+            Where professionals meet freshers: Embark on a journey of limitless growth with AlumNIT
           </Text>
 
           <CustomButton 
