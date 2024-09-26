@@ -1,13 +1,44 @@
 import { ScrollView, Text, View, Image, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
 import { signIn } from '../../lib/appwrite'
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes
+} from "@react-native-google-signin/google-signin"
 
 const SignIn = () => {
+  const [error, setError] = useState();
+  const [userInfo, setUserInfo] = useState();
+
+  const configureGoogleSignIn = () => {
+    GoogleSignin.configure({
+      webClientId: "573659707281-vej3mjl2rabe6ldnrprkurejbmbk6mh2.apps.googleusercontent.com",
+      // androidClientId: "573659707281-llm2qphi5k3h1kqgotnv1lrq8lvsni84.apps.googleusercontent.com",
+      iosClientId: "573659707281-0d0f4f3uoo7cn1hrko153lttuasmec13.apps.googleusercontent.com",
+    });
+  }
+
+  useEffect(() => {
+    configureGoogleSignIn();
+  }, []);
+
+  const useGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      setUserInfo(userInfo);
+      setError();
+    } catch (e) {
+      setError(e); 
+    }
+  }
+
   const [form, setform] = useState({
     email: '',
     password: ''  
@@ -82,11 +113,18 @@ const SignIn = () => {
           <Text className="text-xl text-gray-100 font-pregular">Or</Text>
           </View>
           
-          <CustomButton 
+          {/* <CustomButton 
             title="Sign In with Google"
             handlePress={submit}
             containerStyles="mt-7"
             isLoading={isSubmitting}
+          /> */}
+          <Text className="text-xl text-gray-100 font-pregular">{JSON.stringify(error)}</Text>
+          <Text className="text-xl text-gray-100 font-pregular">{JSON.stringify(userInfo)}</Text>
+          <GoogleSigninButton 
+            size={GoogleSigninButton.Size.Standard}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={useGoogleSignIn}
           />
 
         </View>
