@@ -113,6 +113,7 @@ const SignIn = () => {
           <Image source={images.logo} resizeMode='contain' className="w-[185px] h-[55px]" />
 
           <Text className="text-2xl text-white text-semibold mt-5 font-semibold">
+          <Text className="text-2xl text-white text-semibold mt-5 font-semibold">
             Log in to AlumNIT
           </Text>
 
