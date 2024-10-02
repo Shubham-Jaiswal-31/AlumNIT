@@ -5,7 +5,7 @@ import { images } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router';
-import { signIn } from '../../lib/appwrite';
+import { signIn, createGoogleSession } from '../../lib/appwrite';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -44,20 +44,40 @@ const SignIn = () => {
     configureGoogleSignIn();
   }, []);
 
+  // const useGoogleSignIn = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     setUserInfo(userInfo);
+  //     user_data = userInfo.data.user;
+  //     setform({ ...form, email: user_data.email });
+  //     console.log(user_data.name);
+  //     setError();
+  //   } catch (e) {
+  //     setError(e);
+  //   }
+  // };
+
   const useGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       setUserInfo(userInfo);
-      user_data = userInfo.data.user;
-      setform({ ...form, email: user_data.email });
-      console.log(user_data.name);
+  
+      const token = (await GoogleSignin.getTokens()).idToken;
+
+      await createGoogleSession(token);
+
+      Alert.alert('Success', 'User signed in successfully with Google');
+      router.replace('/home');
       setError();
     } catch (e) {
+      console.error(e);
       setError(e);
+      Alert.alert('Error', 'Google sign-in failed');
     }
   };
-
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async () => {
@@ -92,7 +112,7 @@ const SignIn = () => {
         <View className="w-full justify-center min-h-[85vh] px-4 my-6">
           <Image source={images.logo} resizeMode='contain' className="w-[185px] h-[55px]" />
 
-          <Text className="text-2xl text-white text-semibold mt-10 font-semibold">
+          <Text className="text-2xl text-white text-semibold mt-5 font-semibold">
             Log in to AlumNIT
           </Text>
 
@@ -111,7 +131,6 @@ const SignIn = () => {
             otherStyles="mt-7"
           />
 
-          {/* CAPTCHA Display */}
           <View style={{ marginTop: 15 }}>
             <Text className="text-lg text-white">CAPTCHA: {captcha}</Text>
             <TextInput
