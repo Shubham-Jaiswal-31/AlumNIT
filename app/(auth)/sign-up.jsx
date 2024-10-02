@@ -6,6 +6,7 @@ import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router';
 import { createUser } from '../../lib/appwrite';
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const generateCaptcha = () => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -18,6 +19,7 @@ const generateCaptcha = () => {
 };
 
 const SignUp = () => {
+  const { setUser, setIsLoggedIn } = useGlobalContext();
   const [form, setform] = useState({
     username: '',
     email: '',
@@ -30,17 +32,18 @@ const SignUp = () => {
   const submit = async () => {
     if (form.username === "" || form.email === "" || form.password === "" || captchaInput === "") {
       Alert.alert('Error', 'Please fill in all the fields');
-      return;
     }
     if (captchaInput !== captcha) {
       Alert.alert('Error', 'CAPTCHA does not match');
       setCaptcha(generateCaptcha());
       setCaptchaInput('');
-      return;
     }
+
     setIsSubmitting(true);
     try {
       const result = await createUser(form.email, form.password, form.username);
+      setUser(result);
+      setIsLoggedIn(true);
       router.replace('/home');
     } catch (error) {
       Alert.alert('Error', error.message);

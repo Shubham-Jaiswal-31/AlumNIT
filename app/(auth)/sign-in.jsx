@@ -5,13 +5,9 @@ import { images } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router';
-import { signIn, createGoogleSession } from '../../lib/appwrite';
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes
-// } from "@react-native-google-signin/google-signin";
-// import { TouchableOpacity } from 'react-native';
+import { signIn, getCurrentUser } from '../../lib/appwrite';
+import { useGlobalContext } from "../../context/GlobalProvider";
+
 
 const generateCaptcha = () => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -24,60 +20,13 @@ const generateCaptcha = () => {
 };
 
 const SignIn = () => {
-  // const [error, setError] = useState();
-  // const [userInfo, setUserInfo] = useState();
+  const { setUser, setIsLoggedIn } = useGlobalContext();
   const [captcha, setCaptcha] = useState(generateCaptcha()); 
   const [captchaInput, setCaptchaInput] = useState('');
   const [form, setform] = useState({
     email: '',
     password: ''
   });
-
-  // const configureGoogleSignIn = () => {
-  //   GoogleSignin.configure({
-  //     webClientId: "573659707281-vej3mjl2rabe6ldnrprkurejbmbk6mh2.apps.googleusercontent.com",
-  //     iosClientId: "573659707281-0d0f4f3uoo7cn1hrko153lttuasmec13.apps.googleusercontent.com",
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   configureGoogleSignIn();
-  // }, []);
-
-  // const useGoogleSignIn = async () => {
-  //   try {
-  //     await GoogleSignin.hasPlayServices();
-  //     const userInfo = await GoogleSignin.signIn();
-  //     setUserInfo(userInfo);
-  //     user_data = userInfo.data.user;
-  //     setform({ ...form, email: user_data.email });
-  //     console.log(user_data.name);
-  //     setError();
-  //   } catch (e) {
-  //     setError(e);
-  //   }
-  // };
-
-  // const useGoogleSignIn = async () => {
-  //   try {
-  //     await GoogleSignin.hasPlayServices();
-  //     const userInfo = await GoogleSignin.signIn();
-  //     setUserInfo(userInfo);
-  
-  //     const token = (await GoogleSignin.getTokens()).idToken;
-
-  //     await createGoogleSession(token);
-
-  //     Alert.alert('Success', 'User signed in successfully with Google');
-  //     router.replace('/home');
-  //     setError();
-  //   } catch (e) {
-  //     console.error(e);
-  //     setError(e);
-  //     Alert.alert('Error', 'Google sign-in failed');
-  //   }
-  // };
-  
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = async () => {
@@ -96,10 +45,12 @@ const SignIn = () => {
     setIsSubmitting(true);
 
     try {
-      const result = await signIn(form.email, form.password);
-      setUserInfo(result);
-      Alert.alert('Success', 'User signed in successfully');
-      router.replace('/home');
+      await signIn(form.email, form.password);
+      const result = await getCurrentUser();
+      setUser(result);
+      setIsLoggedIn(true);
+      Alert.alert("Success", "User signed in successfully");
+      router.replace("/home");
     } catch (error) {
       Alert.alert('Error', error.message);
     } finally {
