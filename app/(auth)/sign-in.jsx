@@ -24,8 +24,8 @@ const generateCaptcha = () => {
 };
 
 const SignIn = () => {
-  const [error, setError] = useState();
-  const [userInfo, setUserInfo] = useState();
+  // const [error, setError] = useState();
+  // const [userInfo, setUserInfo] = useState();
   const [captcha, setCaptcha] = useState(generateCaptcha()); 
   const [captchaInput, setCaptchaInput] = useState('');
   const [form, setform] = useState({
@@ -112,7 +112,6 @@ const SignIn = () => {
         <View className="w-full justify-center min-h-[85vh] px-4 my-6">
           <Image source={images.logo} resizeMode='contain' className="w-[185px] h-[55px]" />
 
-          <Text className="text-2xl text-white text-semibold mt-5 font-semibold">
           <Text className="text-2xl text-white text-semibold mt-5 font-semibold">
             Log in to AlumNIT
           </Text>
