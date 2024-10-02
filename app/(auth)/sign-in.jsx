@@ -6,12 +6,12 @@ import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router';
 import { signIn, createGoogleSession } from '../../lib/appwrite';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes
-} from "@react-native-google-signin/google-signin";
-import { TouchableOpacity } from 'react-native';
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+//   statusCodes
+// } from "@react-native-google-signin/google-signin";
+// import { TouchableOpacity } from 'react-native';
 
 const generateCaptcha = () => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -33,16 +33,16 @@ const SignIn = () => {
     password: ''
   });
 
-  const configureGoogleSignIn = () => {
-    GoogleSignin.configure({
-      webClientId: "573659707281-vej3mjl2rabe6ldnrprkurejbmbk6mh2.apps.googleusercontent.com",
-      iosClientId: "573659707281-0d0f4f3uoo7cn1hrko153lttuasmec13.apps.googleusercontent.com",
-    });
-  };
+  // const configureGoogleSignIn = () => {
+  //   GoogleSignin.configure({
+  //     webClientId: "573659707281-vej3mjl2rabe6ldnrprkurejbmbk6mh2.apps.googleusercontent.com",
+  //     iosClientId: "573659707281-0d0f4f3uoo7cn1hrko153lttuasmec13.apps.googleusercontent.com",
+  //   });
+  // };
 
-  useEffect(() => {
-    configureGoogleSignIn();
-  }, []);
+  // useEffect(() => {
+  //   configureGoogleSignIn();
+  // }, []);
 
   // const useGoogleSignIn = async () => {
   //   try {
@@ -58,25 +58,25 @@ const SignIn = () => {
   //   }
   // };
 
-  const useGoogleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      setUserInfo(userInfo);
+  // const useGoogleSignIn = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     setUserInfo(userInfo);
   
-      const token = (await GoogleSignin.getTokens()).idToken;
+  //     const token = (await GoogleSignin.getTokens()).idToken;
 
-      await createGoogleSession(token);
+  //     await createGoogleSession(token);
 
-      Alert.alert('Success', 'User signed in successfully with Google');
-      router.replace('/home');
-      setError();
-    } catch (e) {
-      console.error(e);
-      setError(e);
-      Alert.alert('Error', 'Google sign-in failed');
-    }
-  };
+  //     Alert.alert('Success', 'User signed in successfully with Google');
+  //     router.replace('/home');
+  //     setError();
+  //   } catch (e) {
+  //     console.error(e);
+  //     setError(e);
+  //     Alert.alert('Error', 'Google sign-in failed');
+  //   }
+  // };
   
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -195,7 +195,7 @@ const SignIn = () => {
               </Text>
             </TouchableOpacity>
           </View> */}
-          <View style={{ 
+          {/* <View style={{ 
             width: '100%', 
             height: 60, 
             marginTop: 15, 
@@ -208,7 +208,7 @@ const SignIn = () => {
               color={GoogleSigninButton.Color.Dark}
               onPress={useGoogleSignIn}
             />
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>
