@@ -35,12 +35,12 @@ const SignIn = () => {
       return;
     }
 
-    if (captchaInput !== captcha) {
-      Alert.alert('Error', 'CAPTCHA does not match');
-      setCaptcha(generateCaptcha());
-      setCaptchaInput(''); 
-      return;
-    }
+    // if (captchaInput !== captcha) {
+    //   Alert.alert('Error', 'CAPTCHA does not match');
+    //   setCaptcha(generateCaptcha());
+    //   setCaptchaInput(''); 
+    //   return;
+    // }
 
     setIsSubmitting(true);
 
