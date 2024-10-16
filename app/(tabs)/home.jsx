@@ -8,6 +8,7 @@ import Trending from '../../components/Trending'
 import EmptyState from '../../components/EmptyState'
 import VideoCard from '../../components/VideoCard'
 import useAppwrite from '../../lib/useAppwrite';
+import {getCurrentUser, getAccount} from '../../lib/appwrite';
 
 const Home = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
@@ -19,7 +20,7 @@ const Home = () => {
     setRefreshing(false);
   }
   return (
-    <SafeAreaView className="bg-primary border-2 border-red-500 h-full">
+    <SafeAreaView className="bg-primary h-full">
       <FlatList 
         data={posts}
         keyExtractor={(item) => item.$id}
@@ -40,7 +41,7 @@ const Home = () => {
                   Welcome Back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  JSMastery
+                  Shubham
                 </Text>
               </View>
 
@@ -56,7 +57,7 @@ const Home = () => {
             <SearchInput />
             <View className="w-full flex-1 pt-5 pb-8">
               <Text className="text-lg font-pregular text-gray-100 mb-3">
-                Latest Videos
+                Trending Posts
               </Text>
               <Trending posts={latestPosts ?? []} />
             </View>

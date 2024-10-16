@@ -5,9 +5,13 @@ import { images } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 import { Link, router } from 'expo-router';
-import { signIn, getCurrentUser } from '../../lib/appwrite';
+import { signIn, getCurrentUser, createGoogleSession } from '../../lib/appwrite';
 import { useGlobalContext } from "../../context/GlobalProvider";
-
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes
+} from "@react-native-google-signin/google-signin";
 
 const generateCaptcha = () => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -20,27 +24,62 @@ const generateCaptcha = () => {
 };
 
 const SignIn = () => {
+  const [error, setError] = useState();
+  const [userInfo, setUserInfo] = useState();
   const { setUser, setIsLoggedIn } = useGlobalContext();
   const [captcha, setCaptcha] = useState(generateCaptcha()); 
   const [captchaInput, setCaptchaInput] = useState('');
+
+  const configureGoogleSignIn = () => {
+    GoogleSignin.configure({
+      webClientId: "573659707281-vej3mjl2rabe6ldnrprkurejbmbk6mh2.apps.googleusercontent.com",
+      iosClientId: "573659707281-0d0f4f3uoo7cn1hrko153lttuasmec13.apps.googleusercontent.com",
+    });
+  };
+
+  useEffect(() => {
+    configureGoogleSignIn();
+  }, []);
+  
   const [form, setform] = useState({
     email: '',
     password: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const useGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      setUserInfo(userInfo);
+  
+      const token = (await GoogleSignin.getTokens()).idToken; 
+  
+      await createGoogleSession(token);
+  
+      Alert.alert('Success', 'User signed in successfully with Google');
+      router.replace('/home');
+      setError();
+    } catch (e) {
+      console.error(e);
+      setError(e);
+      Alert.alert('Error', 'Google sign-in failed');
+    }
+  };
+  
+
   const submit = async () => {
-    if (form.email === "") {
+    if (form.email === "" || form.password === "") {
       Alert.alert('Error', 'Please fill in all the fields');
       return;
     }
 
-    // if (captchaInput !== captcha) {
-    //   Alert.alert('Error', 'CAPTCHA does not match');
-    //   setCaptcha(generateCaptcha());
-    //   setCaptchaInput(''); 
-    //   return;
-    // }
+    if (captchaInput !== captcha) {
+      Alert.alert('Error', 'CAPTCHA does not match');
+      setCaptcha(generateCaptcha());
+      setCaptchaInput(''); 
+      return;
+    }
 
     setIsSubmitting(true);
 
@@ -117,6 +156,20 @@ const SignIn = () => {
 
           <View className="justify-center items-center mt-3">
             <Text className="text-xl text-gray-100 font-pregular">Or</Text>
+          </View>
+          <View style={{ 
+            width: '100%', 
+            height: 60, 
+            marginTop: 15, 
+            borderRadius: 25, 
+            overflow: 'hidden'
+          }}>
+            <GoogleSigninButton 
+              style={{ width: '100%', height: '100%' }}
+              size={GoogleSigninButton.Size.Wide} 
+              color={GoogleSigninButton.Color.Dark}
+              onPress={useGoogleSignIn}
+            />
           </View>
            {/* <CustomButton 
             title="Sign In with Google"
