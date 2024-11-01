@@ -9,8 +9,11 @@ import EmptyState from '../../components/EmptyState'
 import VideoCard from '../../components/VideoCard'
 import useAppwrite from '../../lib/useAppwrite';
 import {getCurrentUser, getAccount} from '../../lib/appwrite';
+import { useGlobalContext } from "../../context/GlobalProvider";
+
 
 const Home = () => {
+  const { user, setUser, setIsLoggedIn } = useGlobalContext()
   const { data: posts, refetch } = useAppwrite(getAllPosts);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
   const [refreshing, setRefreshing] = useState(false);
@@ -19,6 +22,9 @@ const Home = () => {
     await refetch();
     setRefreshing(false);
   }
+
+  console.log(user?.username);
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList 
@@ -38,10 +44,10 @@ const Home = () => {
             <View className="flex justify-between items-start flex-row mb-6">
               <View>
                 <Text className="font-pmedium text-sm text-gray-100">
-                  Welcome Back
+                  Welcome Back,
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Shubham
+                  {user?.username}
                 </Text>
               </View>
 
