@@ -12,6 +12,10 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { Image } from "react-native-animatable";
 import InfoBox from "../../components/InfoBox";
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+
+
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext()
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
@@ -41,7 +45,7 @@ const Profile = () => {
               className="w-full items-end mb-10"
               onPress={logout}
             >
-              <Image source={icons.logout} resizeMode="contain" className="w-6 h-6" />
+              <Image source={Icon.logout} resizeMode="contain" className="w-6 h-6" />
             </TouchableOpacity>
 
             <View className="w-16 h-16 border border-secondary rounded-lg justify-center items-center">

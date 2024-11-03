@@ -10,6 +10,8 @@ import { router, useGlobalSearchParams } from 'expo-router'
 import { setupURLPolyfill } from 'react-native-url-polyfill'
 import { createVideo } from '../../lib/appwrite';
 import { useGlobalContext } from '../../context/GlobalProvider';
+import { Image } from 'react-native';
+
 
 const Create = () => {
   const { user } = useGlobalContext();
