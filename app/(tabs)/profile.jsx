@@ -11,10 +11,9 @@ import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { Image } from "react-native-animatable";
 import InfoBox from "../../components/InfoBox";
+import { icons } from "../../constants";
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
-
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext()
@@ -28,8 +27,7 @@ const Profile = () => {
     router.replace('/sign-in')
 
   }
-
-  console.log(user)
+  console.log(user);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -37,7 +35,7 @@ const Profile = () => {
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <VideoCard video={item} />
+          <VideoCard thumbnail={item.thumbnail} body={item.body}/>
         )}
         ListHeaderComponent={() => (
           <View className="w-full justify-center items-center mt-6 mb-12 px-4">
@@ -45,7 +43,7 @@ const Profile = () => {
               className="w-full items-end mb-10"
               onPress={logout}
             >
-              <Image source={Icon.logout} resizeMode="contain" className="w-6 h-6" />
+              <Image source={icons.logout} resizeMode="contain" className="w-6 h-6" />
             </TouchableOpacity>
 
             <View className="w-16 h-16 border border-secondary rounded-lg justify-center items-center">
@@ -79,8 +77,8 @@ const Profile = () => {
         )}
         ListEmptyComponent={() => (
           <EmptyState
-            title="No Videos Found"
-            subtitle="No videos found for this search query"
+            title="No Posts Found"
+            subtitle="No posts found for this search query"
           />
         )}
       />

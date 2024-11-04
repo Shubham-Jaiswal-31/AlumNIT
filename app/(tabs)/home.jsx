@@ -22,8 +22,7 @@ const Home = () => {
     await refetch();
     setRefreshing(false);
   }
-
-  console.log(user?.username);
+  console.log(posts);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -34,9 +33,10 @@ const Home = () => {
           <VideoCard
             title={item.title}
             thumbnail={item.thumbnail}
-            video={item.video}
-            creator={item.creator.username}
-            avatar={item.creator.avatar}
+            // video={item.video}
+            // creator={item.creator.username}
+            // avatar={item.creator.avatar}
+            body={item.body}
           />
         )}
         ListHeaderComponent={() => (
@@ -47,7 +47,7 @@ const Home = () => {
                   Welcome Back,
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  {user?.username}
+                  Shubham
                 </Text>
               </View>
 
@@ -61,12 +61,12 @@ const Home = () => {
             </View>
 
             <SearchInput />
-            <View className="w-full flex-1 pt-5 pb-8">
+            {/* <View className="w-full flex-1 pt-5 pb-8">
               <Text className="text-lg font-pregular text-gray-100 mb-3">
                 Trending Posts
               </Text>
               <Trending posts={latestPosts ?? []} />
-            </View>
+            </View> */}
           </View>
         )}
         ListEmptyComponent={() => (
