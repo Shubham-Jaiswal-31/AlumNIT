@@ -40,8 +40,8 @@ const Search = () => {
         )}
         ListEmptyComponent={() => (
           <EmptyState
-            title="No Videos Found"
-            subtitle="No videos found for this search query"
+            title="No Posts Found"
+            subtitle="No posts found for this search query"
           />
         )}
       />

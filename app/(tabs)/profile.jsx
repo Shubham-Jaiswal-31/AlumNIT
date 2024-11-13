@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,22 +12,20 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { Image } from "react-native-animatable";
 import InfoBox from "../../components/InfoBox";
 import { icons } from "../../constants";
-
 // import Icon from 'react-native-vector-icons/MaterialIcons';
-
+// <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="satya-prakash-mahour" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://in.linkedin.com/in/satya-prakash-mahour?trk=profile-badge">Satya Prakash Mahour</a></div>
+              
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext()
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
+  const [profile, setProfile] = useState(true);
 
   const logout = async () => {
     await signOut();
     setUser(null)
     setIsLoggedIn(false)
-
-    router.replace('/sign-in')
-
+    router.replace('/sign-in');
   }
-  console.log(user);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -35,7 +33,11 @@ const Profile = () => {
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <VideoCard thumbnail={item.thumbnail} body={item.body}/>
+          <VideoCard thumbnail={item.thumbnail}
+          title={item.title}
+          creator={item.creator.username}
+          avatar={item.creator.avatar}
+          body={item.body}/>
         )}
         ListHeaderComponent={() => (
           <View className="w-full justify-center items-center mt-6 mb-12 px-4">
@@ -46,15 +48,24 @@ const Profile = () => {
               <Image source={icons.logout} resizeMode="contain" className="w-6 h-6" />
             </TouchableOpacity>
 
-            <View className="w-16 h-16 border border-secondary rounded-lg justify-center items-center">
-              <Image source={{uri: user?.avatar}}
+              {profile ? (
+                <>
+                <View className="w-16 h-16 border border-secondary rounded-lg justify-center items-center">
+                <Image onPress={() => setProfile(false)} 
+                source={{uri: user?.avatar}}
                 className="w-[90%] h-[90%] rounded-lg "
                 resizeMode="cover"
                />
-            </View>
+                </View>
+                </>
+              ) : (
+                <>
+                <View onPress={() => setProfile(true)} class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="satya-prakash-mahour" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://in.linkedin.com/in/satya-prakash-mahour?trk=profile-badge">Satya Prakash Mahour</a></View>
+                </>
+              )}
 
             <InfoBox 
-              title={user?.username}
+              title={user && user?.username}
               containerStyles='mt-5'
               titleStyles='text-lg'
             />

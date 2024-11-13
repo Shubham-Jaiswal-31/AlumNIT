@@ -22,7 +22,6 @@ const Home = () => {
     await refetch();
     setRefreshing(false);
   }
-  console.log(posts);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -34,8 +33,8 @@ const Home = () => {
             title={item.title}
             thumbnail={item.thumbnail}
             // video={item.video}
-            // creator={item.creator.username}
-            // avatar={item.creator.avatar}
+            creator={item.creator.username}
+            avatar={item.creator.avatar}
             body={item.body}
           />
         )}
@@ -47,7 +46,7 @@ const Home = () => {
                   Welcome Back,
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Shubham
+                  {user && user?.username}
                 </Text>
               </View>
 
@@ -71,8 +70,8 @@ const Home = () => {
         )}
         ListEmptyComponent={() => (
           <EmptyState
-            title="No Videos Found"
-            subtitle="Be the first one to upload a video"
+            title="No Posts Found"
+            subtitle="Be the first one to upload a post"
           />
         )}
         refreshControl={

@@ -35,14 +35,6 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body }) => {
               {creator}
             </Text>
           </View> 
-
-          <View>
-          <Text>
-            {body}
-          </Text>
-          </View>
-          
-
         </View>
 
         <View className="pt-2">
@@ -83,7 +75,7 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body }) => {
               setPlay(false);
             }
           } } /> */}
-         <Text className="text-white">{body}</Text></>
+         <Text onPress={() => setPlay(true)} className="text-white">{body}</Text></>
       )}
     </View>
   );

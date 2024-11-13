@@ -45,7 +45,6 @@ const Create = () => {
   }
 
   const submit = async () => {
-    console.log(user);
     if(form.body==="" || form.title==="" || form.thumbnail===""){
       return Alert.alert('Please fill in all the fields')
     }
