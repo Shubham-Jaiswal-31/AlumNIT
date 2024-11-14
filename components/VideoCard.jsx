@@ -75,7 +75,7 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body }) => {
               setPlay(false);
             }
           } } /> */}
-         <Text onPress={() => setPlay(true)} className="text-white">{body}</Text></>
+         <Text onPress={() => setPlay(true)} className="text-white mt-5 px-2">{body}</Text></>
       )}
     </View>
   );

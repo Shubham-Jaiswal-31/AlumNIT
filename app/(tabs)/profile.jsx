@@ -28,7 +28,7 @@ const Profile = () => {
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-primary my-10 h-full">
       <FlatList
         data={posts}
         keyExtractor={(item) => item.$id}
@@ -40,7 +40,7 @@ const Profile = () => {
           body={item.body}/>
         )}
         ListHeaderComponent={() => (
-          <View className="w-full justify-center items-center mt-6 mb-12 px-4">
+          <View className="w-full justify-center items-center mb-12 px-4">
             <TouchableOpacity
               className="w-full items-end mb-10"
               onPress={logout}
@@ -60,7 +60,7 @@ const Profile = () => {
                 </>
               ) : (
                 <>
-                <View onPress={() => setProfile(true)} class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="satya-prakash-mahour" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://in.linkedin.com/in/satya-prakash-mahour?trk=profile-badge">Satya Prakash Mahour</a></View>
+                {/* <View onPress={() => setProfile(true)} class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="satya-prakash-mahour" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://in.linkedin.com/in/satya-prakash-mahour?trk=profile-badge">Satya Prakash Mahour</a></View> */}
                 </>
               )}
 
