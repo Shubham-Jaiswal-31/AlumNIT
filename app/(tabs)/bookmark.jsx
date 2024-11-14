@@ -20,15 +20,24 @@ const Bookmark = () => {
     };
     if (user) fetchBookmarks();
   }, [user]);
+  console.log(bookmarkedPosts);
 
   return (
-    <SafeAreaView className="px-4 my-6 bg-primary h-full">
-      <Text className="text-2xl text-white font-semibold">Bookmarks</Text>
+    <SafeAreaView className="px-4 my-10 bg-primary h-full">
+      <Text className="text-2xl mb-5 text-white font-semibold">Bookmarks</Text>
       <FlatList
         data={bookmarkedPosts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <VideoCard post={item} />
+          <VideoCard
+            title={item.title}
+            thumbnail={item.thumbnail}
+            // video={item.video}
+            creator={item.creator.username}
+            avatar={item.creator.avatar}
+            body={item.body}
+            postId={item.$id}
+          />
         )}
         ListEmptyComponent={() => (
           <View className="flex-1 justify-center items-center">

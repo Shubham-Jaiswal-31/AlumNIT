@@ -36,6 +36,7 @@ const Home = () => {
             creator={item.creator.username}
             avatar={item.creator.avatar}
             body={item.body}
+            postId={item.$id}
           />
         )}
         ListHeaderComponent={() => (
