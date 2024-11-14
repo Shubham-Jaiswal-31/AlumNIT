@@ -3,9 +3,23 @@ import { ResizeMode, Video } from "expo-av";
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { icons } from "../constants";
+import { addBookmark } from "../lib/appwrite";
+import { useGlobalContext } from "../context/GlobalProvider";
 
-const VideoCard = ({ title, creator, avatar, thumbnail, body }) => {
+const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
   const [play, setPlay] = useState(true);
+  const [isLiked, setIsLiked] = useState(false);
+  const { user } = useGlobalContext();
+
+  const handleBookmark = async () => {
+    try {
+      await addBookmark(user.$id, postId); // Add the bookmark for the user
+      console.log("Post bookmarked successfully!");
+    } catch (error) {
+      console.error("Error bookmarking post:", error);
+    }
+  };
+
   return (
     <View className="flex flex-col items-center px-4 mb-14">
       
@@ -37,8 +51,33 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body }) => {
           </View> 
         </View>
 
-        <View className="pt-2">
+        {/* <View className="pt-2">
           <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
+        </View> */}
+
+        {/* Bookmark and Heart Icons */}
+        <View className="flex flex-row gap-2 pt-2">
+          {/* Bookmark Icon */}
+          <TouchableOpacity activeOpacity={0.7} onPress={handleBookmark}>
+            <Image
+              source={icons.bookmark}
+              className="w-5 h-5"
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          
+          {/* Heart Icon
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => setIsLiked(!isLiked)}
+          >
+            <Image
+              source={isLiked ? icons.heartFilled : icons.heartOutline}
+              className="w-5 h-5"
+              resizeMode="contain"
+              style={{ tintColor: isLiked ? "red" : "gray" }}
+            />
+          </TouchableOpacity> */}
         </View>
 
       </View>

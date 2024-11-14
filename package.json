@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.0.4",
     "@react-native-google-signin/google-signin": "^13.1.0",
     "expo": "~51.0.34",
     "expo-av": "^14.0.7",

@@ -4,7 +4,7 @@ import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAppwrite from "../../lib/useAppwrite";
-import { getUserPosts, signOut } from "../../lib/appwrite";
+import { getUserPosts, signOut, getFollowerCount } from "../../lib/appwrite";   // Assuming getFollowerCount fetches followers
 import SearchInput from '../../components/SearchInput'
 import EmptyState from '../../components/EmptyState'
 import VideoCard from '../../components/VideoCard'
@@ -20,12 +20,27 @@ const Profile = () => {
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
   const [profile, setProfile] = useState(true);
 
+  const [followers, setFollowers] = useState(0);  // Initialize follower count
+
   const logout = async () => {
     await signOut();
     setUser(null)
     setIsLoggedIn(false)
     router.replace('/sign-in');
   }
+
+    // Fetch followers when component mounts
+    useEffect(() => {
+      const fetchFollowers = async () => {
+        try {
+          const count = await getFollowerCount(user.$id); // Fetch follower count
+          setFollowers(count); // Set follower count
+        } catch (error) {
+          console.error("Failed to fetch followers:", error);
+        }
+      };
+      if (user) fetchFollowers();
+    }, [user]);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -77,8 +92,10 @@ const Profile = () => {
                 containerStyles='mr-10'
                 titleStyles='text-xl'
               />
+              {/* let followers = ./1; */}
               <InfoBox 
-                title="1.2k"
+                // title="1.2k"
+                title={followers.toLocaleString()}  // Display followers count
                 subtitle="Followers"
                 titleStyles='text-xl'
               />
