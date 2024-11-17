@@ -94,6 +94,21 @@ const TabsLayout = () => {
             )
           }}
         />
+        <Tabs.Screen
+          name="motivation"
+          options={{
+            title: "Motivation",
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.motivation} 
+                color={color}
+                name="Motivation"
+                focused={focused}
+              />
+            )
+          }}
+        />
       </Tabs>
     </>
   )

@@ -10,23 +10,28 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
   const [play, setPlay] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const { user } = useGlobalContext();
+  const getReadTime = (text) => {
+    const wordCount = text.split(" ").length;
+    const wordsPerMinute = 200;
+    const readTime = Math.ceil(wordCount / wordsPerMinute);
+    return readTime;
+  };
 
   const handleBookmark = async () => {
     try {
-      await addBookmark(user.$id, postId); // Add the bookmark for the user
+      await addBookmark(user.$id, postId); 
       console.log("Post bookmarked successfully!");
     } catch (error) {
       console.error("Error bookmarking post:", error);
     }
   };
 
+  const readTime = getReadTime(body);
+
   return (
     <View className="flex flex-col items-center px-4 mb-14">
-      
       <View className="flex flex-row gap-3 items-start">
-
         <View className="justify-center items-center flex-row flex-1">
-
           <View className="w-[46px] h-[46px] rounded-lg border border-secondary flex justify-center items-center p-0.5">
             <Image
               source={{ uri: avatar }}
@@ -36,28 +41,23 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
           </View>
 
           <View className="justify-center flex-1 ml-3 gap-y-1">
-            <Text
-              className="font-psemibold text-sm text-white"
-              numberOfLines={1}
-            >
+            <Text className="font-psemibold text-sm text-white" numberOfLines={1}>
               {title}
             </Text>
-            <Text
-              className="text-xs text-gray-100 font-pregular"
-              numberOfLines={1}
-            >
+            <Text className="text-xs text-gray-100 font-pregular" numberOfLines={1}>
               {creator}
             </Text>
-          </View> 
+            <Text className="text-xs text-gray-400 mt-2">
+              Estimated Read Time: {readTime} min 
+            </Text>
+          </View>
         </View>
 
         {/* <View className="pt-2">
           <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
         </View> */}
 
-        {/* Bookmark and Heart Icons */}
         <View className="flex flex-row gap-2 pt-2">
-          {/* Bookmark Icon */}
           <TouchableOpacity activeOpacity={0.7} onPress={handleBookmark}>
             <Image
               source={icons.bookmark}
@@ -65,7 +65,6 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
               resizeMode="contain"
             />
           </TouchableOpacity>
-          
           {/* Heart Icon
           <TouchableOpacity
             activeOpacity={0.7}
@@ -79,7 +78,6 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
             />
           </TouchableOpacity> */}
         </View>
-
       </View>
 
       {play ? (
@@ -93,15 +91,14 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
             className="w-full h-full rounded-xl mt-3"
             resizeMode="cover"
           />
-{/* 
+          {/* 
           <Image
             source={icons.play}
             className="w-12 h-12 absolute"
             resizeMode="contain"
           /> */}
         </TouchableOpacity>
-      ) : 
-      (
+      ) : (
         <>
         {/* <Video
           source={{ uri: video }}
@@ -114,7 +111,10 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
               setPlay(false);
             }
           } } /> */}
-         <Text onPress={() => setPlay(true)} className="text-white mt-5 px-2">{body}</Text></>
+          <Text onPress={() => setPlay(true)} className="text-white mt-5 px-2">
+            {body}
+          </Text>
+        </>
       )}
     </View>
   );
