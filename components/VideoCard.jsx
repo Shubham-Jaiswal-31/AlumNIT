@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { ResizeMode, Video } from "expo-av";
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { icons } from "../constants";
 import { addBookmark } from "../lib/appwrite";
 import { useGlobalContext } from "../context/GlobalProvider";
 
-const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
+const VideoCard = ({ title, creator, avatar, thumbnail, body, postId, visible = true }) => {
   const [play, setPlay] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const { user } = useGlobalContext();
@@ -19,8 +19,8 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
 
   const handleBookmark = async () => {
     try {
-      await addBookmark(user.$id, postId); 
-      console.log("Post bookmarked successfully!");
+      const res = await addBookmark(user.$id, postId);
+      Alert.alert("", res);
     } catch (error) {
       console.error("Error bookmarking post:", error);
     }
@@ -57,7 +57,8 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
           <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
         </View> */}
 
-        <View className="flex flex-row gap-2 pt-2">
+        {visible && (
+          <View className="flex flex-row gap-2 pt-2">
           <TouchableOpacity activeOpacity={0.7} onPress={handleBookmark}>
             <Image
               source={icons.bookmark}
@@ -77,7 +78,8 @@ const VideoCard = ({ title, creator, avatar, thumbnail, body, postId }) => {
               style={{ tintColor: isLiked ? "red" : "gray" }}
             />
           </TouchableOpacity> */}
-        </View>
+        </View>)
+}
       </View>
 
       {play ? (

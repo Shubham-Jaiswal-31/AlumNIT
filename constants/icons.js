@@ -12,6 +12,8 @@ import eyeHide from "../assets/icons/eye-hide.png";
 import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 import motivation from "../assets/icons/motivation.png";
+import edit from "../assets/icons/edit.png";
+import save from "../assets/icons/save.png";
 
 export default {
   play,
@@ -28,4 +30,6 @@ export default {
   eyeHide,
   eye,
   motivation,
+  edit,
+  save,
 };

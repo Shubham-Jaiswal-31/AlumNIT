@@ -20,7 +20,6 @@ const Bookmark = () => {
     };
     if (user) fetchBookmarks();
   }, [user]);
-  console.log(bookmarkedPosts);
 
   return (
     <SafeAreaView className="px-4 my-10 bg-primary h-full">
@@ -37,6 +36,7 @@ const Bookmark = () => {
             avatar={item.creator.avatar}
             body={item.body}
             postId={item.$id}
+            visible={false}
           />
         )}
         ListEmptyComponent={() => (

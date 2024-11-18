@@ -86,8 +86,6 @@ const Home = () => {
     );
   }
 
-
-
   return (
     <SafeAreaView className="mt-10 bg-primary h-full">
       <FlatList

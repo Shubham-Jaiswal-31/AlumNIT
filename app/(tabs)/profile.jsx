@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, TextInput } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAppwrite from "../../lib/useAppwrite";
@@ -16,11 +16,12 @@ import { icons } from "../../constants";
 // <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="satya-prakash-mahour" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://in.linkedin.com/in/satya-prakash-mahour?trk=profile-badge">Satya Prakash Mahour</a></div>
               
 const Profile = () => {
-  const { user, setUser, setIsLoggedIn } = useGlobalContext()
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
   const [profile, setProfile] = useState(true);
 
   const [followers, setFollowers] = useState(0);  // Initialize follower count
+  const [inputValue, setInputValue] = useState(""); // State for the text box
 
   const logout = async () => {
     await signOut();
@@ -42,8 +43,13 @@ const Profile = () => {
       if (user) fetchFollowers();
     }, [user]);
 
+    const handleSave = () => {
+      console.log("Saved input:", inputValue);
+      // Add logic to handle the input value (e.g., save to a database)
+    };
+
   return (
-    <SafeAreaView className="bg-primary my-10 h-full">
+    <SafeAreaView className="bg-primary mt-10 h-full">
       <FlatList
         data={posts}
         keyExtractor={(item) => item.$id}
@@ -52,7 +58,8 @@ const Profile = () => {
           title={item.title}
           creator={item.creator.username}
           avatar={item.creator.avatar}
-          body={item.body}/>
+          body={item.body}
+          visible={false}/>
         )}
         ListHeaderComponent={() => (
           <View className="w-full justify-center items-center mb-12 px-4">
@@ -100,7 +107,6 @@ const Profile = () => {
                 titleStyles='text-xl'
               />
             </View>
-
           </View>
         )}
         ListEmptyComponent={() => (
@@ -110,6 +116,36 @@ const Profile = () => {
           />
         )}
       />
+      <View className="flex-row items-center mt-5 mb-14 w-full">
+        <TextInput
+          value={inputValue}
+          onChangeText={setInputValue}
+          placeholder="Enter your quote here"
+          placeholderTextColor="#A1A1A1"
+          className="flex-1 border border-secondary rounded-lg px-3 py-2 text-white"
+        />
+        <TouchableOpacity
+          onPress={handleSave}
+          className="ml-3 bg-secondary px-4 py-2 rounded-lg"
+        >
+          <Image source={icons.save} className="w-6 h-6" resizeMode="contain" />
+        </TouchableOpacity>
+      </View>
+      <View className="flex-row items-center mt-5 mb-20 w-full">
+        <TextInput
+          value={inputValue}
+          onChangeText={setInputValue}
+          placeholder="Enter your quote here"
+          placeholderTextColor="#A1A1A1"
+          className="flex-1 border border-secondary rounded-lg px-3 py-2 text-white"
+        />
+        <TouchableOpacity
+          onPress={handleSave}
+          className="ml-3 bg-secondary px-4 py-2 rounded-lg"
+        >
+          <Image source={icons.edit} className="w-6 h-6" resizeMode="contain" />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   )
 }
