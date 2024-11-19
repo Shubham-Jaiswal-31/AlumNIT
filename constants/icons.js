@@ -14,6 +14,13 @@ import play from "../assets/icons/play.png";
 import motivation from "../assets/icons/motivation.png";
 import edit from "../assets/icons/edit.png";
 import save from "../assets/icons/save.png";
+import reset from "../assets/icons/reset.png";
+import github from "../assets/icons/github.png";
+import linkedin from "../assets/icons/linkedin.png";
+import follow from "../assets/icons/follow.png";
+import unfollow from "../assets/icons/unfollow.png";
+import grey from "../assets/icons/grey.png";
+import red from "../assets/icons/red.png";
 
 export default {
   play,
@@ -32,4 +39,11 @@ export default {
   motivation,
   edit,
   save,
+  reset,
+  github,
+  linkedin,
+  follow,
+  unfollow,
+  grey,
+  red,
 };

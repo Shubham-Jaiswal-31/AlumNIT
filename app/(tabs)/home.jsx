@@ -1,8 +1,8 @@
-import { FlatList, Text, View, Image, RefreshControl } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { FlatList, Text, View, Image, RefreshControl, TouchableOpacity } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../constants';
-import { getAllPosts, getLatestPosts, getAllUsers } from '../../lib/appwrite';
+import { getAllPosts, getLatestPosts, getAllUsers, getCurrentUser } from '../../lib/appwrite';
 import SearchInput from '../../components/SearchInput';
 import Trending from '../../components/Trending';
 import EmptyState from '../../components/EmptyState';
@@ -11,6 +11,21 @@ import useAppwrite from '../../lib/useAppwrite';
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { MaterialIcons } from '@expo/vector-icons'; 
 import UserList from '../../components/UserList';
+import { router, useFocusEffect } from "expo-router";
+import ProfileID from '../profile/profileid';
+import { Stack } from 'expo-router/stack';
+
+function Layout() {
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false
+      }}>
+      <Stack.Screen name="profileID" component={ProfileID} />
+    </Stack>
+  );
+}
+
 
 const Home = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
@@ -48,17 +63,24 @@ const Home = () => {
     const [users, setUsers] = useState([]);
     const [following, setFollowing] = useState({});
 
-    useEffect( () => {
-      const fetchUsers = async () => {
+    
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUserData = async () => {
         try {
-          const allUsers = await getAllUsers();
-          setUsers(allUsers);
+          const updatedUser = await getCurrentUser();
+          setUser(updatedUser);
         } catch (error) {
-          console.error("Error fetching users: ", error);
+          console.error("Failed to fetch user data:", error);
         }
       };
-      fetchUsers();
-    }, [] );
+
+      fetchUserData();
+
+      return () => {
+      };
+    }, [following])
+  );
 
     const handleFlow = async (userId) => {
       try {
@@ -79,7 +101,7 @@ const Home = () => {
           disabled={following[item.$id]}
         >
           <Text style={styles.buttonText}>
-            {following[item.$id] ? "Following" : "Follow"}
+            {user && following[item.$id] ? "Following" : "Follow"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -103,7 +125,7 @@ const Home = () => {
           />
         )}
         ListHeaderComponent={() => (
-          <View className="flex my-6 px-4 space-y-6">
+          <View className="flex mt-6 px-4 space-y-6">
             <View className="flex justify-between items-start flex-row mb-6">
               <View style={{ marginTop: 5 }}>
                 <Text className="font-pmedium text-sm text-gray-100 flex-row">
@@ -120,21 +142,16 @@ const Home = () => {
                   color="white"
                   style={{ marginRight: 100, marginBottom: 20 }}
                 />
+                <TouchableOpacity onPress={() => router.push("../profile/profileid")}>
                 <Image
                   source={images.logoSmall}
                   className="w-10 h-12"
                   resizeMode="contain"
                   style={{ marginBottom: 20 }}
                 />
+                </TouchableOpacity>
               </View>
             </View>
-            <SearchInput />
-            {/* <View className="w-full flex-1 pt-5 pb-8">
-              <Text className="text-lg font-pregular text-gray-100 mb-3">
-                Trending Posts
-              </Text>
-              <Trending posts={latestPosts ?? []} />
-            </View> */}
           </View>
           
         )}
@@ -148,7 +165,7 @@ const Home = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
-      <UserList currentUserId={user.$id} />
+      {user && <UserList currentUserId={user.$id} />}
 
 
 
